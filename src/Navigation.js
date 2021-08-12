@@ -1,13 +1,11 @@
 import React from "react";
 
-class Navigation extends React.Component{
-    render(){
-        return(
-            <nav style={{display: "flex", justifyContent: "flex-end"}}>
-                <p className='f3 link dim black underline pa3 pointer'>Sign out</p>
-            </nav>
-        );
-    }
+const Navigation = () => {
+    return(
+        <nav style={{display: "flex", justifyContent: "flex-end"}}>
+            <p className='f3 link white dim underline pa3 pointer'>Sign out</p>
+        </nav>
+    );
 }
 
 export default Navigation;

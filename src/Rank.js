@@ -1,10 +1,13 @@
 import React from "react";
 
-class Rank extends React.Component{
-    render(){
-        return(
-            <h1>hello</h1>
-        );
-    }
+const Rank = () => {
+    return(
+        <div>
+            <div className='white f3 center'>
+                {'Hello Ankesh Singh!!'}
+            </div>
+        </div>
+    );
 }
+
 export default Rank;
