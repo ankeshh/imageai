@@ -1,8 +1,12 @@
 import React from "react";
 
-const Image = () =>{
+const Image = ({imagee}) =>{
     return(
-        <h1>hello</h1>
+        <div className='center ma'>
+            <div className='absolute mt2 '>
+            <img alt='' src={imagee} width='300px' height='auto'/>
+            </div>
+        </div>
     );
 }
 export default Image;
