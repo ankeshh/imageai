@@ -22,9 +22,27 @@ class App extends Component {
       box: {},
       route: 'signin',
       isSignedin: false,
+      user: {
+        id: '100',
+        name: 'Ankesh',
+        email: '',
+        count: 0,
+        joined: ''
+      },
     }
   }
 
+  loaduser = (data) => {
+    const{id,name,email,count,joined} = data;
+    this.setState({user: {
+      id: id,
+      name: name,
+      email: email,
+      count: count,
+      joined: joined
+    }})
+  }
+  
   // componentDidMount(){
   //   fetch('http://localhost:3000/')
   //     .then(response=>response.json())
@@ -55,7 +73,20 @@ class App extends Component {
   onbuttonClick = () =>{
     this.setState({urlimg: this.state.input});
     app.models.predict(Clarifai.FACE_DETECT_MODEL,this.state.input)
-    .then((response) => this.facebox(this.faceboxCal(response)))  //response is sent by the server. Use that and create function
+    .then((response) => {
+      if(response){
+        fetch('http://localhost:3000/imagecount', {
+          method: 'put',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            id: this.state.user.id
+          })
+        }).then(response=>response.json())
+          .then(count => {
+            this.setState(Object.assign(this.state.user, {count: count}))
+          })
+      }
+      this.facebox(this.faceboxCal(response))})  //response is sent by the server. Use that and create function
     .catch(err => console.log(err));
   }
 
@@ -74,14 +105,14 @@ class App extends Component {
       <div className="App"> 
         <Navigation isSignedin={this.state.isSignedin} onrouteChange={this.onrouteChange}/>
         {this.state.route === 'signin' ? 
-          <Signin onrouteChange={this.onrouteChange}/>
+          <Signin loaduser={this.loaduser} onrouteChange={this.onrouteChange}/>
           :
           this.state.route === 'register' ? 
             <Register onrouteChange={this.onrouteChange}/>
             :
             <div>
-              <LogoU/>
-              <Rank/>
+              {/* <LogoU/> */}
+              <Rank name={this.state.user.name} count={this.state.user.count}/>
               <Form inputchange={this.onInputchange} buttonClick={this.onbuttonClick}/>
               <Image box={this.state.box} imagee={this.state.urlimg}/>
             </div>      

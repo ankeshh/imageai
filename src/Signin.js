@@ -27,11 +27,13 @@ class Signin extends React.Component {
             })
         })
         this.props.onrouteChange('home')
-            //POST GETTING SENT AS GET BY DEFAULT WHILE DOING THIS AND WHOLE PAGE REFRESHES
+            // POST GETTING SENT AS GET BY DEFAULT WHILE DOING THIS AND WHOLE PAGE REFRESHES
             // .then(response => response.json())
             // .then(data => {
-            //     if(data === 'success')
+            //     if(data.id){
+            //         this.props.loaduser(data);
             //         this.props.onrouteChange('home');
+            //     }
             // })
     }
 
