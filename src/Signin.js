@@ -26,15 +26,15 @@ class Signin extends React.Component {
                 password: this.state.signinpassword
             })
         })
-        this.props.onrouteChange('home')
+        // this.props.onrouteChange('home')
             // POST GETTING SENT AS GET BY DEFAULT WHILE DOING THIS AND WHOLE PAGE REFRESHES
-            // .then(response => response.json())
-            // .then(data => {
-            //     if(data.id){
-            //         this.props.loaduser(data);
-            //         this.props.onrouteChange('home');
-            //     }
-            // })
+            .then(response => response.json())
+            .then(data => {
+                if(data.id){
+                    this.props.loaduser(data);
+                    this.props.onrouteChange('home');
+                }
+            })
     }
 
     render(){

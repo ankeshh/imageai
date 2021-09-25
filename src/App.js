@@ -23,8 +23,8 @@ class App extends Component {
       route: 'signin',
       isSignedin: false,
       user: {
-        id: '100',
-        name: 'Ankesh',
+        id: '',
+        name: '',
         email: '',
         count: 0,
         joined: ''
@@ -108,7 +108,7 @@ class App extends Component {
           <Signin loaduser={this.loaduser} onrouteChange={this.onrouteChange}/>
           :
           this.state.route === 'register' ? 
-            <Register onrouteChange={this.onrouteChange}/>
+            <Register loaduser={this.loaduser} onrouteChange={this.onrouteChange}/>
             :
             <div>
               {/* <LogoU/> */}
