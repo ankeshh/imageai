@@ -61,7 +61,7 @@ class App extends Component {
 
   onbuttonClick = () =>{
     this.setState({urlimg: this.state.input});
-    fetch('http://localhost:3000/image', {
+    fetch('https://secret-sierra-54278.herokuapp.com/image', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -71,7 +71,7 @@ class App extends Component {
       .then(response = response.json())
       .then((response) => {
         if(response){
-          fetch('http://localhost:3000/imagecount', {
+          fetch('https://secret-sierra-54278.herokuapp.com/imagecount', {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
