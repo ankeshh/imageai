@@ -1,35 +1,30 @@
 import React, {Component} from "react";
 import Navigation from "./Navigation";
 import Rank from "./Rank";
-import LogoU from "./LogoU";
 import Form from "./Form";
 import Image from "./Image";
 import Signin from "./Signin";
-import Clarifai from 'clarifai';
 import Register from "./Register";
 import './app.css';
 
-
-const app = new Clarifai.App({
-  apiKey: '3fef8537306e4c018585ac391a663284'
-});
+const initialstate = {
+  input: '',
+  urlimg: '',
+  box: {},
+  route: 'signin',
+  isSignedin: false,
+  user: {
+    id: '',
+    name: '',
+    email: '',
+    count: 0,
+    joined: ''
+  },
+}
 class App extends Component {
   constructor(){
     super();
-    this.state={
-      input: '',
-      urlimg: '',
-      box: {},
-      route: 'signin',
-      isSignedin: false,
-      user: {
-        id: '',
-        name: '',
-        email: '',
-        count: 0,
-        joined: ''
-      },
-    }
+    this.state = initialstate;
   }
 
   loaduser = (data) => {
@@ -43,12 +38,6 @@ class App extends Component {
     }})
   }
   
-  // componentDidMount(){
-  //   fetch('http://localhost:3000/')
-  //     .then(response=>response.json())
-  //     .then(data => console.log(data))
-  // }
-
   faceboxCal =(data) =>{
     const faceloc = data.outputs[0].data.regions[0].region_info.bounding_box;
     const image = document.getElementById('inputimage');
@@ -72,27 +61,35 @@ class App extends Component {
 
   onbuttonClick = () =>{
     this.setState({urlimg: this.state.input});
-    app.models.predict(Clarifai.FACE_DETECT_MODEL,this.state.input)
-    .then((response) => {
-      if(response){
-        fetch('http://localhost:3000/imagecount', {
-          method: 'put',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({
-            id: this.state.user.id
-          })
-        }).then(response=>response.json())
-          .then(count => {
-            this.setState(Object.assign(this.state.user, {count: count}))
-          })
-      }
+    fetch('http://localhost:3000/image', {
+      method: 'post',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        input: this.state.input
+      })
+    })
+      .then(response = response.json())
+      .then((response) => {
+        if(response){
+          fetch('http://localhost:3000/imagecount', {
+            method: 'put',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              id: this.state.user.id
+            })
+          }).then(response=>response.json())
+            .then(count => {
+              this.setState(Object.assign(this.state.user, {count: count}))
+            })
+            .catch(console.log);
+          }
       this.facebox(this.faceboxCal(response))})  //response is sent by the server. Use that and create function
-    .catch(err => console.log(err));
+      .catch(err => console.log(err));
   }
 
   onrouteChange = (route) =>{
     if(route === 'signin'){
-      this.setState({isSignedin: false})
+      this.setState(initialstate)
     }
     else if(route ==='home'){
       this.setState({isSignedin: true})
